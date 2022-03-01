@@ -6,6 +6,8 @@ import {
   Post,
   Put,
   Delete,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto/request';
@@ -56,6 +58,7 @@ export class UserController {
   @ApiOkResponse({
     description: 'Create user successfully',
   })
+  @UsePipes(ValidationPipe)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -68,6 +71,7 @@ export class UserController {
   @ApiOkResponse({
     description: 'Update user successfully',
   })
+  @UsePipes(ValidationPipe)
   @Put()
   update(@Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(updateUserDto);

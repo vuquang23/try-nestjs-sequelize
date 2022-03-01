@@ -1,10 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import {
-  instanceToPlain,
-  plainToClass,
-  plainToInstance,
-} from 'class-transformer';
 import { UserModel } from '../../database/models/user.model';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
@@ -33,6 +28,15 @@ export class UserService {
       return new UserResponseDto();
     }
     return data as UserResponseDto;
+  }
+
+  public async findOneByEmail(email: string): Promise<UserModel> {
+    const data = await this.userModel.findOne({
+      where: {
+        email: email,
+      },
+    });
+    return data;
   }
 
   public async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
