@@ -3,34 +3,36 @@ import { InjectModel } from '@nestjs/sequelize';
 import { UserModel } from '../../database/models/user.model';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
+import { UserResponseDto } from './dto/response/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(UserModel) private userModel: typeof UserModel) {}
 
-  public async findAll() {
+  public async findAll(): Promise<UserResponseDto[]> {
     const data = await this.userModel.findAll();
-    return {
-      data: data,
-    };
+    if (data === null) {
+      return [];
+    }
+
+    return data;
   }
 
-  public async findOne(id: string) {
+  public async findOne(id: string): Promise<UserResponseDto> {
     const data = await this.userModel.findOne({
       where: {
         id: id,
       },
     });
-    return {
-      data: data,
-    };
+    if (data === null) {
+      return new UserResponseDto();
+    }
+    return data as UserResponseDto;
   }
 
-  public async create(createUserDto: CreateUserDto) {
+  public async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const data = await this.userModel.create(createUserDto);
-    return {
-      data: data,
-    };
+    return data;
   }
 
   public async update(updateUserDto: UpdateUserDto) {
@@ -39,15 +41,11 @@ export class UserService {
         id: updateUserDto.id,
       },
     });
-    return {
-      data: data,
-    };
+    return data;
   }
 
   public async remove(id: string) {
-    const data = await this.userModel.destroy({ where: { id: parseInt(id) } });
-    return {
-      data: data,
-    };
+    const data = await this.userModel.destroy({ where: { id: id } });
+    return data;
   }
 }
