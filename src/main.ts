@@ -5,6 +5,7 @@ import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from './config/app/app-config.interface';
 import { AppProvider } from './providers/app/app.provider';
+import { HandleResponseInterceptor } from './common/interceptors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,8 @@ async function bootstrap() {
     });
   }
   app.setGlobalPrefix(appConfig.apiPrefix);
+
+  app.useGlobalInterceptors(new HandleResponseInterceptor());
 
   await app.listen(appConfig.port);
 }

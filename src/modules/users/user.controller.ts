@@ -16,7 +16,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserResponseDto } from './dto/response/user.dto';
+import { UserResponseDto } from './dto/response';
 
 @ApiTags('User')
 @Controller('users')
