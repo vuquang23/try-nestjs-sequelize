@@ -3,7 +3,7 @@ import { IsNotEmpty, IsEmail, Validate } from 'class-validator';
 import {
   EmailNotDuplicated,
   EmailDuplication,
-} from '../../validators/email/email.validator';
+} from '../../validations/decorators';
 
 export class CreateUserDto {
   @ApiProperty()

@@ -7,14 +7,14 @@ import {
 } from 'class-validator';
 import { UserService } from '../../user.service';
 
-@ValidatorConstraint({ async: true })
 @Injectable()
+@ValidatorConstraint({ name: 'EmailDuplication', async: true })
 export class EmailDuplication implements ValidatorConstraintInterface {
   constructor(private userService: UserService) {}
 
-  async validate(value: string): Promise<boolean> {
+  async validate(value: string) {
     const user = await this.userService.findOneByEmail(value);
-    return user !== null;
+    return user === null;
   }
 
   defaultMessage(): string {

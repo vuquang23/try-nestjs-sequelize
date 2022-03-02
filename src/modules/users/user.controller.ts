@@ -19,6 +19,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserResponseDto } from './dto/response';
+import { EmailDuplication } from './validations/decorators/can-create-email.validator';
 
 @ApiTags('User')
 @Controller('users')
