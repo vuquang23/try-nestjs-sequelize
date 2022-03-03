@@ -3,6 +3,8 @@ import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import { IDatabaseConfig } from '../config/database/database-config.interface';
 import models from './models';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
+import { IElasticsearchConfig } from '../config/elasticsearch';
 
 @Module({
   imports: [
@@ -30,7 +32,23 @@ import models from './models';
     }),
 
     SequelizeModule.forFeature(models),
+
+    ElasticsearchModule.registerAsync({
+      useFactory: async (configService: ConfigService) => {
+        const elasticsearchConfig =
+          configService.get<IElasticsearchConfig>('elasticsearch');
+        return {
+          node: elasticsearchConfig.node,
+          auth: {
+            username: elasticsearchConfig.username,
+            password: elasticsearchConfig.password,
+          },
+        };
+      },
+      inject: [ConfigService],
+    }),
   ],
-  exports: [SequelizeModule],
+
+  exports: [SequelizeModule, ElasticsearchModule],
 })
 export class DatabaseModule {}

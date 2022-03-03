@@ -20,11 +20,15 @@ import {
 } from '@nestjs/swagger';
 import { UserResponseDto } from './dto/response';
 import { EmailDuplication } from './validations/decorators/can-create-email.validator';
+import { SearchUserService } from './search-user.service';
 
 @ApiTags('User')
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private searchUserService: SearchUserService
+  ) {}
 
   @ApiOperation({ summary: 'Get all users' })
   @ApiBadRequestResponse({
@@ -35,7 +39,7 @@ export class UserController {
   })
   @Get()
   findAll() {
-    return this.userService.findAll();
+    return this.searchUserService.findAll();
   }
 
   @ApiOperation({ summary: 'Get specific user' })
@@ -48,8 +52,8 @@ export class UserController {
   })
   @ApiParam({ name: 'id', type: String })
   @Get('/:id')
-  findOne(@Param('id') id: string): Promise<UserResponseDto> {
-    return this.userService.findOne(id);
+  findOne(@Param('id') id: string) {
+    return this.searchUserService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Create an user' })
