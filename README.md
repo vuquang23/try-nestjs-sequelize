@@ -45,6 +45,12 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Swagger
+http://localhost:3000/api/v1/documment/
+
+## Kibana
+https://bit.ly/3HOaECP
+
 ## Test
 
 ```bash
